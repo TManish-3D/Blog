@@ -1,0 +1,25 @@
+/* Navbar link hover effect */
+.nav-hover {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-hover:hover {
+    color: #fff !important; /* Keep text white */
+}
+
+.nav-hover::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: white;
+    transition: width 0.3s;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.nav-hover:hover::after {
+    width: 100%;
+}
