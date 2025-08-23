@@ -3,32 +3,14 @@ from flask import render_template,url_for,redirect,flash
 from new_projects import app,db, bcrypt
 import os
 import secrets
-from new_projects.forms import RegistrationForm,LoginForm,PictureForm
+from new_projects.forms import RegistrationForm,LoginForm,PictureForm,PostForm
 from new_projects.models import User, Post
 from flask_login import login_user,current_user,logout_user,login_required
-items=[
-    {
-       'Name':"Apple" ,
-       'Type':"fruits" ,
-       'Price':"Rs 450",
-       'Details':'knsdknkd'
-    },
-      {
-       'Name':"car" ,
-       'Type':"Vehicle" ,
-       'Price':"Rs 45000" ,
-       'Details':'knserhthththdknkd'
-    },
-      {
-       'Name':"Rumal" ,
-       'Type':"Clothes" ,
-       'Price':"Rs 45" ,
-       'Details':'asdfasdfsd'
-    }
-]
+
 @app.route("/")
 def home():
-    return render_template("base.html",items=items)
+    posts=Post.query.all()
+    return render_template("base.html",posts=posts)
 
 def save_picture(form_picture):
    random_hex=secrets.token_hex(8)
@@ -88,3 +70,14 @@ def login():
         
     
    return render_template('login.html', form=form)
+
+@app.route("/newpost",methods=['GET','POST'])
+def newpost():
+   form=PostForm()
+   if form.validate_on_submit():
+      post=Post(title=form.title.data,content=form.content.data,author=current_user)
+      db.session.add(post)
+      db.session.commit()
+      flash('Your post has been published','success')
+      return redirect(url_for('home'))
+   return render_template('newpost.html',title='New Post',form=form)
