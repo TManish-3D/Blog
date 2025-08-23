@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center">
+    <h2>{{ current_user.username }}</h2>
+
+    <img class="rounded-circle account-img" src="{{ image_file }}" alt="Profile Picture" style="width: 150px; height: 150px; object-fit: cover;">
+
+    
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+       <div class="pp"><p>
+            {{ form.picture.label }}<br>
+            {{ form.picture() }}
+            {% if form.picture.errors %}
+              {% for error in form.picture.errors %}
+                <span style="color: red;">{{ error }}</span>
+                
+                {% endfor %}
+                {% endif %}
+            
+        </p></div> 
+
+       
+
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
+{% endblock %}

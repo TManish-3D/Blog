@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask{% endblock %}</title>
+    
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  </head>
+<body>
+    <header>
+        <h1>Flask app</h1>
+        <div class="navbar">
+            <nav>
+              {% if current_user.is_authenticated %}
+              <a href="/account">Account</a>
+              <a href="/logout">Logout</a>
+               
+               {% else %}
+                <a href="/">Home</a>
+                
+                <a href="/register">Register</a>
+                <a href="/login">Login</a>
+               {% endif %}
+            </nav>
+        </div>
+        
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if category == 'success' %}
+        <p style="color: green;">{{ message }}</p>
+      {% elif category == 'danger' %}
+        <p style="color: red;">{{ message }}</p>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+    </header>
+
+    <main>{% block content %}{% endblock %}
+      
+
+  {% for item in items %}
+      <h3>Name:{{ item.Name }}</h3>
+       <h4>Type:{{ item.Type }}</h4>
+      <h4>Price:{{ item.Price }}</h4>
+      <p>Details:{{ item.Details }}</p>
+    {% endfor %}
+    
+    </main>
+    <footer>@Made by manish</footer>
+</body>
+</html>
