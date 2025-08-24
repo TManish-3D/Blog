@@ -38,6 +38,14 @@ def account():
             print(form.errors)
     return render_template('account.html',title='Account',image_file=image_file,form=form)
 
+@app.route("/user/<string:username>")
+@login_required
+def user_posts(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(user_id=user.id).all()
+    return render_template('user.html', user=user, posts=posts)
+
+
 @app.route("/register",methods=['GET','POST'])
 def register():
     if current_user.is_authenticated:
@@ -81,3 +89,9 @@ def newpost():
       flash('Your post has been published','success')
       return redirect(url_for('home'))
    return render_template('newpost.html',title='New Post',form=form)
+
+@app.route("/newpost/<int:post_id>")
+@login_required
+def post(post_id):
+   post=Post.query.get_or_404(post_id)
+   return render_template('post.html',title=post.title,post=post)

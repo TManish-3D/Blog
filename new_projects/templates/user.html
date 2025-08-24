@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left Sidebar: Profile Info -->
+        <div class="col-md-4">
+            <div class="card shadow-sm rounded-3 p-4 text-center">
+                
+                <!-- Profile Picture -->
+                <div class="mb-3 position-relative">
+                    <img id="profileImage" 
+                         src="{{ url_for('static', filename='images/' + (user.image_file if user.image_file else 'default.jpg')) }}" 
+                         alt="{{ user.username }}'s Profile Picture" 
+                         class="rounded-circle border border-3 border-orangered" 
+                         style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
+                         onclick="previewImage(this.src)">
+                </div>
+
+                <!-- Username -->
+                <h3 style="color: orangered;">{{ user.username }}</h3>
+
+                <!-- Email -->
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+        </div>
+
+        <!-- Right Side: User Posts -->
+         <div class="col-md-8">
+            <div class="card shadow-sm rounded-3 p-4 mb-4">
+                <h4>Profile Info</h4>
+                <p><strong>Username:</strong> {{user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm rounded-3 p-4">
+                <h4>{{ user.username }}'s Posts</h4>
+                <div class="row">
+                    {% for post in user.posts %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <!-- Post Title (clickable) -->
+                                    <h5 class="card-title">
+                                        <a href="{{ url_for('newpost', post_id=post.id) }}"
+                                           style="color: #000; text-decoration: none;"
+                                           onmouseover="this.style.color='#ff4500'; this.style.textDecoration='underline';"
+                                           onmouseout="this.style.color='#000'; this.style.textDecoration='none';">
+                                           {{ post.title }}
+                                        </a>
+                                    </h5>
+                                    <p class="card-text">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
+                                    <small class="text-muted">{{ post.date.strftime('%Y-%m-%d') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No posts yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Preview Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0">
+        <img id="modalImage" src="" class="img-fluid rounded" alt="Preview">
+      </div>
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<script>
+function previewImage(src) {
+    document.getElementById('modalImage').src = src;
+    var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+    imageModal.show();
+}
+</script>
+{% endblock %}

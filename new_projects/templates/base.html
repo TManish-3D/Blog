@@ -22,11 +22,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 {% if current_user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link text-white nav-hover" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link text-white nav-hover" href="/newpost">New Post</a></li>
                     <li class="nav-item"><a class="nav-link text-white nav-hover" href="/account">Account</a></li>
                     <li class="nav-item"><a class="nav-link text-white nav-hover" href="/logout">Logout</a></li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link text-white nav-hover" href="/">Home</a></li>
+                    
                     <li class="nav-item"><a class="nav-link text-white nav-hover" href="/register">Register</a></li>
                     <li class="nav-item"><a class="nav-link text-white nav-hover" href="/login">Login</a></li>
                 {% endif %}
@@ -67,18 +68,21 @@
                                      width="50" height="50" alt="Profile Picture"style="cursor: pointer;"
                              onclick="previewImage(this.src)">
                                 <div>
-                                    <strong>{{ post.author.username }}</strong><br>
+                                      <a href="{{ url_for('account') if post.author == current_user else url_for('user_posts', username=post.author.username) }}"
+                                        style="text-decoration: none; color: #000; font-weight: 600;">
+                                           {{ post.author.username }}</a>
+                                    
                                     <small class="text-muted">{{ post.date.strftime('%Y-%m-%d') }}</small>
                                 </div>
                             </div>
 
                             <!-- Post Title & Content -->
-                            <h5 class="card-title">{{ post.title }}</h5>
-                            <p class="card-text">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
+                           <h5 class="card-title"style="color: #000; font-weight: 700" >{{ post.title }}</h5>
+                            <p class="card-text"style="color: #212529;">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
 
                             <!-- Read More Button -->
                             <div class="mt-auto text-end">
-                                <a href="/post/{{ post.id }}" class="btn btn-sm text-white" style="background-color: orangered;">Read More</a>
+                                <a href="{{ url_for('post',post_id=post.id) }}" class="btn btn-sm text-white" style="background-color: orangered;">Read More</a>
                             </div>
                         </div>
                     </div>
