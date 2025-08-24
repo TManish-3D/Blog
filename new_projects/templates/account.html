@@ -24,7 +24,7 @@
                 <!-- Upload Picture Form -->
                 <form method="POST" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}
-                    <label class="btn btn-outline-orangered mt-3 w-100" style="border-color: orangered; color: orangered; cursor: pointer;">
+                    <label class="btn btn-outline-orangered mt-3 w-100" style="border-color: orangered; color: #1c1c1c; cursor: pointer;">
                         Change Profile Picture
                         {{ form.picture(class="d-none", onchange="this.form.submit()") }}
                     </label>
@@ -35,7 +35,7 @@
         <!-- Right Side: User Info / Posts -->
         <div class="col-md-8">
             <div class="card shadow-sm rounded-3 p-4 mb-4">
-                <h4>Profile Info</h4>
+                <h4>Profile Info</h4><br>
                 <p><strong>Username:</strong> {{ current_user.username }}</p>
                 <p><strong>Email:</strong> {{ current_user.email }}</p>
             </div>

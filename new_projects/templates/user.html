@@ -42,14 +42,13 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <!-- Post Title (clickable) -->
-                                    <h5 class="card-title">
-                                        <a href="{{ url_for('newpost', post_id=post.id) }}"
-                                           style="color: #000; text-decoration: none;"
-                                           onmouseover="this.style.color='#ff4500'; this.style.textDecoration='underline';"
-                                           onmouseout="this.style.color='#000'; this.style.textDecoration='none';">
+                                    <h5 class="card-title"
+                                        
+                                           style="color: #000; text-decoration: none;">
+                                           
                                            {{ post.title }}
-                                        </a>
-                                    </h5>
+                                        
+                                </h5>
                                     <p class="card-text">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
                                     <small class="text-muted">{{ post.date.strftime('%Y-%m-%d') }}</small>
                                 </div>

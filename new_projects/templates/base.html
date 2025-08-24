@@ -13,28 +13,92 @@
 <body class="bg-light">
 
     <!-- Navbar -->
-   <nav class="navbar navbar-expand-lg" style="background-color: orangered;">
-    <div class="container">
-        <a class="navbar-brand text-white fw-bold" href="/">Flask Blog</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                {% if current_user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link text-white nav-hover" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white nav-hover" href="/newpost">New Post</a></li>
-                    <li class="nav-item"><a class="nav-link text-white nav-hover" href="/account">Account</a></li>
-                    <li class="nav-item"><a class="nav-link text-white nav-hover" href="/logout">Logout</a></li>
-                {% else %}
-                    
-                    <li class="nav-item"><a class="nav-link text-white nav-hover" href="/register">Register</a></li>
-                    <li class="nav-item"><a class="nav-link text-white nav-hover" href="/login">Login</a></li>
-                {% endif %}
-            </ul>
-        </div>
+  <!-- Navbar -->
+<!-- Modern Dark Theme Navbar with Link Style -->
+<nav class="navbar navbar-expand-lg fixed-top shadow-sm navbar-dark">
+  <div class="container">
+    
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold fs-4" href="/" 
+       style="color: orangered; letter-spacing: 1px; transition: 0.3s;">
+       Flask Blog
+    </a>
+
+    <!-- Toggler for Mobile -->
+    <button class="navbar-toggler border-0" type="button" 
+            data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
+        {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/newpost">New Post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account">Account</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
+  </div>
 </nav>
+
+<!-- CSS for dark theme + hover effect -->
+<style>
+.navbar {
+  background-color: #1c1c1c !important;
+  padding: 0.7rem 1rem;
+}
+
+/* Brand Styling */
+.navbar-brand {
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+.navbar-brand:hover {
+  color: #ff7043 !important;
+}
+
+/* Nav link styling */
+.navbar-nav .nav-link {
+  color: white !important;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+.navbar-nav .nav-link:hover {
+  color: orangered !important;
+  text-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+}
+
+/* Gap between nav items */
+.navbar-nav .nav-item {
+  margin-left: 0.5rem;
+}
+
+/* Fix body overlap */
+body {
+  padding-top: 75px;
+}
+</style>
+
+
 
 
         
@@ -55,42 +119,63 @@
     <main class="container mt-4">
         {% block content %}
         
-        <!-- Posts Section -->
-        <div class="row">
-            {% for post in posts %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card shadow-sm h-100 rounded-3">
-                        <div class="card-body d-flex flex-column">
-                            <!-- Profile Picture + Username + Date -->
-                            <div class="d-flex align-items-center mb-3">
-                                <img class="rounded-circle me-3" 
-                                     src="{{ url_for('static', filename='images/' + (post.author.image_file if post.author.image_file else 'default.jpg')) }}" 
-                                     width="50" height="50" alt="Profile Picture"style="cursor: pointer;"
-                             onclick="previewImage(this.src)">
-                                <div>
-                                      <a href="{{ url_for('account') if post.author == current_user else url_for('user_posts', username=post.author.username) }}"
-                                        style="text-decoration: none; color: #000; font-weight: 600;">
-                                           {{ post.author.username }}</a>
-                                    
-                                    <small class="text-muted">{{ post.date.strftime('%Y-%m-%d') }}</small>
-                                </div>
-                            </div>
-
-                            <!-- Post Title & Content -->
-                           <h5 class="card-title"style="color: #000; font-weight: 700" >{{ post.title }}</h5>
-                            <p class="card-text"style="color: #212529;">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
-
-                            <!-- Read More Button -->
-                            <div class="mt-auto text-end">
-                                <a href="{{ url_for('post',post_id=post.id) }}" class="btn btn-sm text-white" style="background-color: orangered;">Read More</a>
-                            </div>
-                        </div>
+  <!-- Posts Section -->
+<div class="d-flex flex-column align-items-center">
+    {% for post in posts %}
+        <div class="card shadow-sm rounded-4 border-0 mb-4 post-card"
+             style="max-width: 600px; width: 100%;">
+            <div class="card-body p-4">
+                
+                <!-- Profile Picture + Username + Date -->
+                <div class="d-flex align-items-center mb-3">
+                    <img class="rounded-circle me-3 shadow-sm"
+                         src="{{ url_for('static', filename='images/' + (post.author.image_file if post.author.image_file else 'default.jpg')) }}" 
+                         width="50" height="50" alt="Profile Picture"
+                         style="object-fit: cover; cursor: pointer; border: 2px solid orangered;"
+                         onclick="previewImage(this.src)">
+                    <div>
+                        <a href="{{ url_for('account') if post.author == current_user else url_for('user_posts', username=post.author.username) }}"
+                           style="text-decoration: none; color: #d10c0c; font-weight: 600;">
+                           {{ post.author.username }}</a>
+                        <br>
+                        <small class="text-muted">{{ post.date.strftime('%b %d, %Y') }}</small>
                     </div>
                 </div>
-            {% else %}
-                <p class="text-center text-muted">No posts yet. Create a new post to get started!</p>
-            {% endfor %}
+
+                <!-- Post Title & Content -->
+                <h5 class="card-title mb-2" style="color: #000; font-weight: 700;">
+                    {{ post.title }}
+                </h5>
+                <p class="card-text text-muted" style="line-height: 1.6;">
+                    {{ post.content[:150] }}{% if post.content|length > 150 %}...{% endif %}
+                </p>
+
+                <!-- Read More Button -->
+                <div class="text-end">
+                    <a href="{{ url_for('post', post_id=post.id) }}" 
+                       class="btn btn-sm px-3 text-white"
+                       style="background-color: #1c1c1c; border-radius: 20px;">
+                       Read More
+                    </a>
+                </div>
+            </div>
         </div>
+    {% else %}
+        <p class="text-center text-muted">No posts yet. Create a new post to get started!</p>
+    {% endfor %}
+</div>
+
+<!-- Hover Effects -->
+<style>
+.post-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.post-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+</style>
+
         <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content bg-transparent border-0">
