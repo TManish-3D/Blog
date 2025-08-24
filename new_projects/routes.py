@@ -32,7 +32,7 @@ def account():
     
      flash('Photo Uploaded!', 'success')
     
-    image_file = url_for('static', filename='images/'+ current_user.image_file)
+    image_file = url_for('static', filename='images/'+ (current_user.image_file if current_user.image_file else 'default.jpg'))
         # Optional: log or flash form errors
     if form.errors:
             print(form.errors)

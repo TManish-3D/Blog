@@ -63,7 +63,7 @@
                             <!-- Profile Picture + Username + Date -->
                             <div class="d-flex align-items-center mb-3">
                                 <img class="rounded-circle me-3" 
-                                     src="{{ url_for('static', filename='images/' + post.author.image_file) }}" 
+                                     src="{{ url_for('static', filename='images/' + (post.author.image_file if post.author.image_file else 'default.jpg')) }}" 
                                      width="50" height="50" alt="Profile Picture"style="cursor: pointer;"
                              onclick="previewImage(this.src)">
                                 <div>
