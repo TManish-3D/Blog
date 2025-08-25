@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}Reset{% endblock %}
 {% block content %}
    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="card shadow-lg p-4" style="width: 400px; border-radius: 12px;">
-        <h2 class="text-center mb-4" style="color: #1c1c1c;">Login</h2>
+        <h2 class="text-center mb-4" style="color: #1c1c1c;">Reset Password</h2>
 
         <form method="POST">
             {{ form.hidden_tag() }}
@@ -13,21 +13,9 @@
                 {{ form.email.label(class="form-label") }}
                 {{ form.email(class="form-control", placeholder="Email address") }}
             </div>
-
-            <!-- Password -->
-            <div class="mb-3">
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control", placeholder="Password") }}
-            </div>
-
             <!-- Submit -->
             <div class="d-grid">
                 {{ form.submit(class="btn btn-primary btn-lg",style="background-color: #1c1c1c; border: none;") }}
             </div>
-            <div class="text-center mt-3">
-    <a href="{{ url_for('reset_request') }}" style="color: orangered; text-decoration: none;">
-        Forgot Password?
-    </a>
-</div>
         </form>
 {% endblock %}

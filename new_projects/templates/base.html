@@ -152,12 +152,35 @@ body {
 
                 <!-- Read More Button -->
                 <div class="text-end">
-                    <a href="{{ url_for('post', post_id=post.id) }}" 
-                       class="btn btn-sm px-3 text-white"
-                       style="background-color: #1c1c1c; border-radius: 20px;">
-                       Read More
-                    </a>
-                </div>
+    <a href="{{ url_for('post', post_id=post.id) }}" 
+       class="read-more-btn">
+       Read More
+    </a>
+</div>
+
+<style>
+/* Read More Button Styling */
+.read-more-btn {
+    display: inline-block;
+    background-color: #1c1c1c;
+    color: white !important;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.read-more-btn:hover {
+    background-color: #2a2a2a;
+    color: orangered !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 14px rgba(255, 87, 34, 0.5);
+    text-decoration: none;
+}
+</style>
+
             </div>
         </div>
     {% else %}
@@ -173,6 +196,9 @@ body {
 .post-card:hover {
     transform: translateY(-5px) scale(1.01);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    
+
+
 }
 </style>
 
