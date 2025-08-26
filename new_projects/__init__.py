@@ -10,9 +10,7 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY']='horathikxa'
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-db_path = os.path.join(basedir, 'instance', 'site.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///site.db'
 db=SQLAlchemy(app)
 bcrypt=Bcrypt(app)
 migrate = Migrate(app, db)
