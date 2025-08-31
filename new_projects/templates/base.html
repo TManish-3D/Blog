@@ -201,14 +201,19 @@ body {
 
 }
 </style>
-
-        <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+{% if current_user.is_authenticated %}
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content bg-transparent border-0">
-      <div class="modal-body p-0">
-        <img id="modalImage" src="" class="img-fluid rounded" alt="Preview">
-      </div>
-      <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content bg-transparent border-0 position-relative">
+      
+      <!-- Image -->
+      <img id="modalImage" src="" class="img-fluid rounded" alt="Preview">
+
+      <!-- Close Button on top of image -->
+      <button type="button" class="btn-close position-absolute" 
+              style="top: 5px; right: 5px;" 
+              data-bs-dismiss="modal" aria-label="Close"></button>
+
     </div>
   </div>
 </div>
@@ -220,6 +225,21 @@ function previewImage(src) {
     imageModal.show();
 }
 </script>
+
+
+{% else %}
+<script>
+function previewImage(src) {
+    alert("You must login to view this image.");
+}
+</script>
+{% endif %}
+
+
+
+
+
+
 {% endblock %}
        
     </main>
