@@ -5,7 +5,12 @@ from flask_login import UserMixin
 
 @login_manager.user_loader
 def load_user(user_id):
-   return User.query.get(int(user_id))
+    user = User.query.get(int(user_id))
+    # Only allow active users to be loaded
+    if user and user.is_active:
+        return user
+    return None
+
 
 class User(db.Model,UserMixin):
    __tablename__ = "users"
@@ -14,6 +19,10 @@ class User(db.Model,UserMixin):
    email=db.Column(db.String(50),unique=True,nullable=True )
    password=db.Column(db.String(255),nullable=True )
    image_file=db.Column(db.String(20),nullable=True ,default='default.jpg')
+   created_at = db.Column(db.DateTime, default=datetime.utcnow)
+   is_active=db.Column(db.Boolean, default=True, nullable=False, server_default='1')
+
+   role=db.Column(db.String(20),default='user')
    posts=db.relationship('Post',backref='author',lazy=True)
 
    def get_reset_token(self, expires_sec=1800):
@@ -31,9 +40,11 @@ class User(db.Model,UserMixin):
     return User.query.get(user_id)
 
    
-
+   def is_admin(self):
+      return self.role == "admin"
+   
    def __repr__(self):
-      return f"User('{self.username}','{self.email}','{self.image_file}')"
+      return f"User('{self.username}','{self.email}','{self.image_file} {self.role}')"
    
 class Post(db.Model):
    __tablename__ = "posts"

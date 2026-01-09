@@ -23,3 +23,6 @@
 .nav-hover:hover::after {
     width: 100%;
 }
+h1{
+    color: rgb(216, 30, 30);
+}

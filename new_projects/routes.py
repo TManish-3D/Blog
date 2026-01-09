@@ -7,6 +7,8 @@ from flask_mail import Message
 from new_projects.forms import (RegistrationForm,LoginForm,PictureForm,PostForm,RequestResetForm,ResetPasswordForm)
 from new_projects.models import User, Post
 from flask_login import login_user,current_user,logout_user,login_required
+from werkzeug.security import generate_password_hash,check_password_hash
+from new_projects.decorators import admin_required
 
 @app.route("/")
 def home():
@@ -60,6 +62,7 @@ def register():
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('login'))  # or redirect to login/home
     return render_template('register.html', form=form)
+
 @app.route("/logout")
 def logout():
     logout_user()
@@ -72,12 +75,14 @@ def login():
    if form.validate_on_submit():
      user=User.query.filter_by(email=form.email.data).first()
      if user and bcrypt.check_password_hash(user.password,form.password.data):
+      if not user.is_active:
+          flash('Your account has been deactivated', 'danger')
+          return render_template('login.html', form=form)
       login_user(user)
-      return redirect(url_for('home'))  # or redirect to login/home
+      return redirect(url_for('home'))
      else:
-        flash('Invalid cerentials','danger')
-        
-    
+        flash('Invalid credentials','danger')
+   
    return render_template('login.html', form=form)
 
 @app.route("/newpost",methods=['GET','POST'])
@@ -180,3 +185,75 @@ def reset_token(token):
         return redirect(url_for('login'))
     return render_template('reset_token.html', form=form)
 
+# Admin login
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        admin = User.query.filter_by(username=username, role="admin").first()
+
+        if admin and check_password_hash(admin.password,password):
+            login_user(admin)
+            return redirect(url_for("admin_dashboard"))
+
+        flash("Invalid admin credentials","danger")
+
+    return render_template("admin/login.html")
+
+@app.route("/admin/dashboard")
+@admin_required
+def admin_dashboard():
+    user_count = User.query.count()
+    post_count = Post.query.count()
+
+    return render_template(
+        "admin/dashboard.html",
+        user_count=user_count,
+        post_count=post_count
+    )
+
+#admin users
+@app.route("/admin/users")
+@admin_required
+def admin_users():
+    users = User.query.order_by(User.created_at.desc()).all() 
+    return render_template("admin/users.html", users=users)
+
+# DELETE USER
+@app.route("/admin/users/delete/<int:id>")
+@admin_required
+def admin_delete_user(id):
+    user = User.query.get_or_404(id)
+
+    if user.role == "admin":
+        flash("Cannot delete admin user", "danger")
+        return redirect(url_for("admin_users"))
+
+    db.session.delete(user)
+    db.session.commit()
+    flash("User deleted", "success")
+    return redirect(url_for("admin_users"))
+
+@app.route("/admin/posts")
+@admin_required
+def admin_posts():
+    posts = Post.query.all()
+    return render_template("admin/posts.html", posts=posts)
+
+
+@app.route("/admin/posts/delete/<int:id>")
+@admin_required
+def admin_delete_post(id):
+    post = Post.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for("admin_posts"))
+
+
+@app.route("/admin/logout")
+@admin_required
+def admin_logout():
+    logout_user()
+    return redirect(url_for("admin_login"))

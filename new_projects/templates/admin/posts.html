@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block content %}
+
+<h2 class="mb-3">Manage Posts</h2>
+
+<table class="table table-striped shadow-sm">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for post in posts %}
+    <tr>
+      <td>{{ post.id }}</td>
+      <td>{{ post.title }}</td>
+      <td>{{ post.author.username }}</td>
+       <td>
+  <span class="badge bg-secondary">
+    {{ post.date.strftime('%d %b %Y, %H:%M') }}
+  </span>
+</td>
+
+      <td>
+        <!-- Edit can be added later -->
+         <a href="{{ url_for('post', post_id=post.id) }}"
+           class="btn btn-info btn-sm" target="_blank">
+           View
+        </a>
+        <a href="{{ url_for('admin_delete_post', id=post.id) }}"
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Delete this post?')">
+           Delete
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

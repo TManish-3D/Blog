@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% block content %}
+
+<h2 class="mb-3">User Management</h2>
+
+
+
+<table class="table table-bordered table-striped shadow-sm">
+  <thead class="table-dark">
+<tr>
+  <th>ID</th>
+  <th>Username</th>
+  <th>Email</th>
+  <th>Role</th>
+  <th>Registered On</th>
+  <th>Status</th> <!-- New -->
+  <th>Actions</th>
+</tr>
+</thead>
+
+<tbody>
+{% for user in users %}
+<tr>
+  <td>{{ user.id }}</td>
+  <td>{{ user.username }}</td>
+  <td>{{ user.email }}</td>
+  <td>
+    <span class="badge {{ 'bg-danger' if user.role == 'admin' else 'bg-secondary' }}">
+      {{ user.role }}
+    </span>
+  </td>
+  <td>
+    {% if user.created_at %}
+      {{ user.created_at.strftime('%d %b %Y') }}
+    {% else %}
+      N/A
+    {% endif %}
+  </td>
+  <td>
+    {% if user.is_active %}
+      <span class="badge bg-success">Active</span>
+    {% else %}
+      <span class="badge bg-danger">Inactive</span>
+    {% endif %}
+  </td>
+  <td>
+    
+    {% if user.role != 'admin' %}
+      <a href="{{ url_for('admin_delete_user', id=user.id) }}"
+         class="btn btn-danger btn-sm"
+         onclick="return confirm('Delete this user?')">Delete</a>
+    {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+{% endblock %}
