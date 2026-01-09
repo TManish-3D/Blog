@@ -6,7 +6,7 @@
     <div class="card shadow-lg p-4" style="width: 500px; border-radius: 12px;">
         <h2 class="text-center mb-4" style="color: #1c1c1c;">Create New Post</h2>
 
-        <form method="POST">
+        <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
 
             <!-- Title -->
@@ -25,6 +25,10 @@
                 {% for error in form.content.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
+            </div>
+            <div class="mb-3">
+               {{ form.picture.label(class="form-control-label") }}
+                {{ form.picture(class="form-control-file") }} 
             </div>
 
             <!-- Submit Button -->

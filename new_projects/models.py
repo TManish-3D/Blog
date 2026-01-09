@@ -6,6 +6,7 @@ from flask_login import UserMixin
 @login_manager.user_loader
 def load_user(user_id):
    return User.query.get(int(user_id))
+
 class User(db.Model,UserMixin):
    __tablename__ = "users"
    id=db.Column(db.Integer,primary_key=True )
@@ -18,6 +19,7 @@ class User(db.Model,UserMixin):
    def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
+   
    @staticmethod
    def verify_reset_token(token, expires_sec=1800):
     s = Serializer(app.config['SECRET_KEY'])
@@ -39,6 +41,7 @@ class Post(db.Model):
    title=db.Column(db.String(20),nullable=False )
    date=db.Column(db.DateTime,nullable=True,default=datetime.utcnow )
    content=db.Column(db.Text,nullable=False )
+   image_file=db.Column(db.String(20),nullable=True ,default='default.jpg')
    user_id=db.Column(db.Integer,db.ForeignKey('users.id'), nullable=False)
 
    def __repr__(self):

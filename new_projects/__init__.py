@@ -30,7 +30,7 @@ app.config['MAIL_USERNAME']=os.environ.get('EMAIL_USER')
 app.config['MAIL_PASSWORD']=os.environ.get('EMAIL_PASS')
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('EMAIL_USER')
 app.config['DEBUG']=True
-mail=Mail(app)
+mail=Mail(app)  
 
 
 from new_projects import routes

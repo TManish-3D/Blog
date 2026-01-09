@@ -32,6 +32,7 @@ def upgrade():
     sa.Column('title', sa.String(length=20), nullable=False),
     sa.Column('date', sa.DateTime(), nullable=True),
     sa.Column('content', sa.Text(), nullable=False),
+    sa.Column('image_file', sa.String(length=50), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')

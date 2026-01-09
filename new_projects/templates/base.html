@@ -149,6 +149,14 @@ body {
                 <p class="card-text text-muted" style="line-height: 1.6;">
                     {{ post.content[:150] }}{% if post.content|length > 150 %}...{% endif %}
                 </p>
+                {% if post.image_file %}
+    <div class="mb-3 text-center">  
+        <img src="{{ url_for('static', filename='images/' + post.image_file) }}"
+             class="img-fluid rounded-3 shadow-sm"
+             style="max-height: 400px; width: 100%; object-fit: cover;"
+             alt="Post Image">
+    </div>
+{% endif %}
 
                 <!-- Read More Button -->
                 <div class="text-end">
